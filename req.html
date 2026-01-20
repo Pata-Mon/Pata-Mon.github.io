@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="icon" sizes="32x32" href="icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-autospace: auto;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+            overflow-y: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            min-width: 800px;
+            height: 85vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* --- 左侧侧边栏样式 --- */
+        .sidebar {
+            width: 240px;
+            background-color: #f8f9fa;
+            border-right: 1px solid #e1e5eb;
+            display: flex;
+            flex-direction: column;
+            padding-top: 10px;
+            /* 调整了顶部间距，因为删除了标题 */
+            flex-shrink: 0;
+        }
+
+        /* 已删除 .sidebar-title 相关样式 */
+
+        .tab-buttons {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .tab-button {
+            padding: 0 25px;
+            width: 100%;
+            height: 50px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            color: #6c757d;
+            text-align: left;
+            position: relative;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .tab-button:hover {
+            color: #343a40;
+            background-color: #ecf0f1;
+        }
+
+        .tab-button.active {
+            color: #007bff;
+            background-color: #ebf5ff;
+            font-weight: 600;
+        }
+
+        .tab-button.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #007bff;
+        }
+
+        /* --- 右侧主体内容区样式 --- */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-header {
+            height: 60px;
+            min-height: 60px;
+            border-bottom: 1px solid #e1e5eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            background: #fff;
+        }
+
+        .current-page-title h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: #569;
+        }
+
+        .tabs-content {
+            flex: 1;
+            padding: 10px 30px;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        /* --- 语言切换器样式 (改为整体点击) --- */
+        .language-switch {
+            display: flex;
+            background: #f1f3f5;
+            border-radius: 20px;
+            padding: 4px;
+            position: relative;
+            width: 160px;
+            cursor: pointer;
+            /* 整个区域变成手型光标 */
+            user-select: none;
+            /* 防止双击选中文本 */
+            transition: background-color 0.2s;
+        }
+
+        .language-switch:hover {
+            background: #e9ecef;
+        }
+
+        .language-option {
+            flex: 1;
+            text-align: center;
+            padding: 6px 0;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 1;
+            transition: color 0.3s ease;
+            pointer-events: none;
+            /* 关键：让文字不拦截点击事件，点击穿透到父容器 */
+        }
+
+        .language-option.active {
+            color: #fff;
+        }
+
+        .language-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: calc(100% - 8px);
+            width: calc(50% - 4px);
+            background: #007bff;
+            border-radius: 16px;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .language-switch.english .language-slider {
+            transform: translateX(0);
+        }
+
+        .language-switch.chinese .language-slider {
+            transform: translateX(100%);
+        }
+
+        /* 内容显示控制 */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .show-cn .en,
+        .show-en .cn {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 滚动条美化 */
+        .tabs-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .tabs-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .tabs-content::-webkit-scrollbar-thumb {
+            background: #ced4da;
+            border-radius: 3px;
+        }
+
+        .tabs-content::-webkit-scrollbar-thumb:hover {
+            background: #adb5bd;
+        }
+
+        /* 下拉容器样式 */
+        .dropdown-container {
+            margin: 10px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        /* 切换按钮样式 */
+        .dropdown-toggle {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: #f5f5f5;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-toggle:hover {
+            background-color: #e9e9e9;
+        }
+
+        /* 切换图标 */
+        .toggle-icon {
+            transition: transform 0.3s ease;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .dropdown-toggle[aria-expanded="true"] .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 隐藏的内容区域 */
+        .dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 16px;
+            background-color: white;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        /* 展开时的样式 */
+        .dropdown-toggle[aria-expanded="true"]+.dropdown-content {
+            max-height: 500px;
+            /* 根据内容调整这个值 */
+            padding: 16px;
+        }
+
+        /* 其他样式 */
+        .comments {
+            color: #aaa;
+        }
+
+        ul {
+            margin-left: 1em;
+        }
+
+        li {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        p {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+
+        ul p {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        h2 {
+            margin-top: 1em;
+        }
+
+        a {
+            color: #569
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container show-en">
+        <div class="sidebar">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="home">
+                    <span class="en">Request Pata-Mon</span>
+                    <span class="cn">向 Pata-Mon 提出申请</span>
+                </button>
+                <button class="tab-button" data-tab="bn">
+                    <span class="en">BN Req (General)</span>
+                    <span class="cn">BN Req (通常)</span>
+                </button>
+                <button class="tab-button" data-tab="b4b">
+                    <span class="en">BN Req (B4B)</span>
+                    <span class="cn">BN Req (B4B)</span>
+                </button>
+                <button class="tab-button" data-tab="tp">
+                    <span class="en">Testplay / Quick View</span>
+                    <span class="cn">试图 / 看图</span>
+                </button>
+                <button class="tab-button" data-tab="gd">
+                    <span class="en">GD / Tournament Custom Map</span>
+                    <span class="cn">GD / 比赛定制图</span>
+                </button>
+                <button class="tab-button" data-tab="other">
+                    <span class="en">Others</span>
+                    <span class="cn">其他</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="main-wrapper">
+            <div class="top-header">
+                <div class="current-page-title" id="headerTitle"></div>
+
+                <div class="language-switch english">
+                    <div class="language-slider"></div>
+                    <div class="language-option active" id="lang-text-en">English</div>
+                    <div class="language-option" id="lang-text-cn">中文</div>
+                </div>
+            </div>
+            <div class="tabs-content">
+                <div id="home" class="tab-content active">
+                    <p class="comments">
+                        <span class="cn">You can click the button in the upper right corner to switch to English.</span>
+                        <span class="en">你可以点击右上角按钮来切换成中文。</span>
+                    </p>
+                    <p>
+                        <span class="cn">如果你对我有任何申请，请先阅读相应的规则（见左侧边栏）。违反规则的申请可能导致你被拉黑。如果确信本文档中没有包含你的申请所对应的规则，可以QQ或<a
+                                href="https://osu.ppy.sh/home/messages/users/6149313"
+                                target="_blank">私信</a>询问我，但不要询问与Osu!无关的内容。</span>
+                        <span class="en">If you have any request for me, please read the corresponding rules first (see
+                            left sidebar). Requests that violate the rules may lead to being blacklisted. If you are
+                            certain that the rules for your request are not included in this document, you can <a
+                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">PM</a> me, but do
+                            not ask anything unrelated to osu!.</span>
+                    </p>
+                    <p>
+                        <span class="cn">你可以在<a
+                                href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
+                                target="_blank">我的日志</a>中查看所有相关需要记录的信息。</span>
+                        <span class="en">You can check all relevant information recorded in <a
+                                href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
+                                target="_blank">my log</a>.</span>
+                    </p>
+                </div>
+
+                <div id="bn" class="tab-content">
+                    <p class="comments">
+                        <span class="cn">如果你是BN/NAT，我希望你能跟我B4B（见侧边栏下一项），而非通过本渠道申请。</span>
+                        <span class="en">If you are a BN/NAT, I hope you can do B4B with me (see the next item in the
+                            sidebar) instead of applying through this channel.</span>
+                    </p>
+                    <p>
+                        <b class="cn">请务必在提交申请前完整阅读以下内容，否则可能导致被拉黑。我的BN Req总是开放的，所以不用着急，认真读完它吧。另外，请保证<a
+                                href="https://osu.ppy.sh/home/account/edit"
+                                target="_blank">你的私信开放</a>，以便如果需要的话我能联系上你。</b>
+                        <b class="en">Please make sure to read the following content completely before submitting a
+                            request, otherwise you may be blacklisted. My BN requests are always open, so take your time
+                            and read through it. Also, please ensure <a href="https://osu.ppy.sh/home/account/edit"
+                                target="_blank">your PMs are open</a> so that I can contact you if needed.</b>
+                    </p>
+                    <h2>
+                        <span class="cn">规则</span>
+                        <span class="en">Rules</span>
+                    </h2>
+                    <p>
+                        <span class="cn">这是你必须要遵守的部分，违反这部分内容将可能导致你被警告和拉黑。</span>
+                        <span class="en">This is the part you must follow; violating this part may result in you being
+                            warned and blacklisted.</span>
+                    </p>
+                    <ul>
+                        <li>
+                            <span class="cn">你的图必须符合<a href="https://osu.ppy.sh/wiki/en/Ranking_criteria"
+                                    target="_blank">RC</a>，且必须是做完的。这意味着没有正在等待完成的难度，每个难度都已经做完并且下了音效，同时不能使用AI生成或AI辅助。</span>
+                            <span class="en">Your map must follow the <a
+                                    href="https://osu.ppy.sh/wiki/en/Ranking_criteria" target="_blank">RC</a> and must
+                                be finished. This means there are no pending diffs, every diff is finished and
+                                hitsounded, and AI-generated or AI-assisted content is not allowed.</span>
+                        </li>
+                        <li>
+                            <span class="cn">你的图最高难度不能超过7.00*（6.50*以下机会更大）。</span>
+                            <span class="en">The highest diff of your map cannot exceed 7.00* (below 6.50* have a higher
+                                chance).</span>
+                        </li>
+                        <li>
+                            <span class="cn">你只能提交自己是host的图。</span>
+                            <span class="en">You can only submit mapsets you host.</span>
+                        </li>
+                        <li>
+                            <span class="cn">两次提交之间至少需要相隔90天（如果是填错了导致需要立即重填的则不算，但请在表单中说明）。如果你不记得上次提交是什么时候，请在<a
+                                    href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
+                                    target="_blank">我的日志</a>中查找。</span>
+                            <span class="en">There must be at least 90 days between two submissions (unless it's an
+                                immediate resubmission due to a mistake, but please explain in the form). If you don't
+                                remember when your last submission was, please check <a
+                                    href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
+                                    target="_blank">my log</a>.</span>
+                            <br>
+                            <span class="cn comments">双向好友不受此限制，但如果我已经接过你的图，除非有特殊原因，否则90天内不会再接。</span>
+                            <span class="en comments">Mutual friends are not subject to this limit, but if I have
+                                already accepted your map, I won't accept another one within 90 days unless there's a
+                                special reason.</span>
+                        </li>
+                        <li>
+                            <span class="cn">不要重复提交同一张图，除非你做了根本性的改变（比如remap了），此时请在表单中说明。</span>
+                            <span class="en">Do not submit the same map repeatedly unless you have made fundamental
+                                changes (e.g., remap), in which case please explain in the form.</span>
+                        </li>
+                        <li>
+                            <span class="cn">不要提交以下类型歌曲：</span>
+                            <span class="en">Do not submit the following types of songs:</span>
+                            <br>
+                            <span class="cn">Sped Up Ver./Nightcore Mix/除了加速和动次打次以外几乎啥都没有的remix；</span>
+                            <span class="en">Sped Up Ver./Nightcore Mix/Remixes that are low effort like previous (just
+                                speed and basic beats);</span>
+                            <br>
+                            <span class="cn">几乎全是极端嗓（如黑/死/核）且1/4鼓点spam的音乐；</span>
+                            <span class="en">Music that consists almost entirely of harsh vocals (e.g.,
+                                black/death/core) and 1/4 drum spam;</span>
+                            <br>
+                            <span class="cn">极端刺耳的音乐。</span>
+                            <span class="en">Extremely harsh or piercing music.</span>
+                        </li>
+                        <li>
+                            <span
+                                class="cn">不要提交在2014年及之后已有Ranked图的歌曲，除非你认为你的图明显好于它们或者跟它们有根本性的不同（在好的意义上），此时请在表单中说明你的理由。</span>
+                            <span class="en">Do not submit songs that already have a Ranked map from 2014 onwards,
+                                unless you believe your map is significantly superior or fundamentally different (in a
+                                good way), in which case please explain your reasoning in the form.</span>
+                            <br>
+                            <span class="cn comments">以下情况算已有Ranked图：</span>
+                            <span class="en comments">The following cases count as having a Ranked map:</span>
+                            <br>
+                            <span class="cn comments">Ranked图使用的歌曲是完整版，而你做的是Cut ver./TV
+                                Size；Ranked图使用的歌曲是原唱，而你做的是翻唱。</span>
+                            <span class="en comments">The Ranked version is the full version while yours is Cut ver./TV
+                                Size; the Ranked version is the original while yours is a cover.</span>
+                            <br>
+                            <span class="cn comments">以下情况不算已有Ranked图：</span>
+                            <span class="en comments">The following cases do not count as having a Ranked map:</span>
+                            <br>
+                            <span class="cn comments">Ranked图使用的歌曲是Cut ver./TV
+                                Size，而你做的是完整版；Ranked图使用的歌曲是翻唱，而你做的是原唱（但你最好在表单里说一下，以免我不知道）；你和Ranked所使用的版本经过了完全不同的编排（同样最好说一下）。</span>
+                            <span class="en comments">The Ranked version is Cut ver./TV Size while yours is the full
+                                version; the Ranked version is a cover while yours is the original (please specify in
+                                the form just so I’m aware); your version is a completely different arrangement (please
+                                specify too).</span>
+                        </li>
+                    </ul>
+                    <h2>
+                        <span class="cn">偏好</span>
+                        <span class="en">Preferences</span>
+                    </h2>
+                    <p>
+                        <span class="cn">由于你每隔一段时间才能提交申请一次，所以选择符合我偏好的图提交会增加你的申请被接受的几率。</span>
+                        <span class="en">Since you can only submit once in a while, choosing a map that fits my
+                            preferences will increase the chance of your request being accepted.</span>
+                    </p>
+                    <p>
+                        <b class="cn">我喜欢：</b>
+                        <b class="en">I like:</b>
+                    </p>
+                    <ul>
+                        <li>
+                            <span class="cn">能切实表现音乐的有趣的图。</span>
+                            <span class="en">Interesting maps that effectively represent the music.</span>
+                        </li>
+                        <li>
+                            <span class="cn">注重可玩性的图。</span>
+                            <span class="en">Maps that focus on playability.</span>
+                        </li>
+                        <li>
+                            <span class="cn">整洁的图。</span>
+                            <span class="en">Clean maps.</span>
+                        </li>
+                        <p>
+                            <span class="cn comments">上面这三条是最重要的，比其他加起来都重要。</span>
+                            <span class="en comments">The three points above are the most important, more than
+                                everything else combined.</span>
+                        </p>
+                        <li>
+                            <span class="cn">Full Spread，即便在相应时长下RC没有要求必须做低难度。（我鼓励Mapper为新手提供更多选择）</span>
+                            <span class="en">Full Spread, even if the RC doesn't require low diffs for that length. (It
+                                is encouraged to provide more choices for beginners)</span>
+                        </li>
+                        <li>
+                            <span class="cn">难度名正确指示出实际难度。我不想看到一张4*的Hard或者一张充满180bpm 1/4分离串的Insane。</span>
+                            <span class="en">The diff names accurately represent the actual difficulty.
+                                I don't want to see a 4* 'Hard' or an 'Insane' filled with 180bpm 1/4 spacing
+                                streams.</span>
+                        </li>
+                    </ul>
+                    <p>
+                        <b class="cn">我不喜欢：</b>
+                        <b class="en">I don't like:</b>
+                    </p>
+                    <ul>
+                        <li>
+                            <span class="cn">没有真正在表达音乐的、能被称为“XX Slop”的图。</span>
+                            <span class="en">Maps that don't really express the music, often referred to as "XX
+                                Slop".</span>
+                        </li>
+                        <li>
+                            <span class="cn">类似于比赛NM2或耐力NM5/DT2的纯串图。切指不在此列。</span>
+                            <span class="en">Pure stream maps similar to tournament NM2, stamina NM5/DT2. Finger control
+                                maps are not included in this category.</span>
+                        </li>
+                        <li>
+                            <span class="cn">在所有难度中，有任何一个没有达到我的标准。</span>
+                            <span class="en">Mapset with even one diff that fails to meet my standards.</span>
+                        </li>
+                        <li>
+                            <span class="cn">使用Keysound并且仅仅是在复读原曲（我认为这种Keysound对游戏时的反馈并无帮助，甚至还有负作用）。</span>
+                            <span class="en">Using keysounds that merely repeat the original track (I believe this kind
+                                of keysounding doesn't help with gameplay feedback and might even be
+                                counterproductive).</span>
+                        </li>
+                        <p>
+                            <span
+                                class="cn comments">上面这些是比较重要的，换句话说，只要你的图足够好足够有趣，下面这些歌曲偏好就不太有所谓。但如果你的图只是还行，那么下面这些就很重要了。</span>
+                            <span class="en comments">The points above are quite important; in other words, as long as
+                                your map is good and interesting enough, the song preferences below don't matter as
+                                much. But if your map is just okay, then the following points are very important.</span>
+                        </p>
+                        <li>
+                            <span class="cn">唱功太差的歌手（或者说根本不是歌手）。</span>
+                            <span class="en">Singers with poor singing skills that they can’t even be called
+                                singers.</span>
+                        </li>
+                        <li>
+                            <span class="cn">粗制滥造的网红歌曲。</span>
+                            <span class="en">Low-quality viral songs.</span>
+                        </li>
+                        <li>
+                            <span class="cn">较为极端的摇滚。</span>
+                            <span class="en">Relatively extreme rock music.</span>
+                        </li>
+                        <li>
+                            <span class="cn">韩语、俄语歌曲。</span>
+                            <span class="en">Korean or Russian songs.</span>
+                        </li>
+                        <li>
+                            <span class="cn">ACG男声歌曲。专业男歌手演唱的流行音乐不在此列。</span>
+                            <span class="en">Anime, game & 2.5D male vocal songs. Pop music performed by professional
+                                male singers is not included in this category.</span>
+                        </li>
+                    </ul>
+                    <h2>
+                        <span class="cn">提交申请及提交后</span>
+                        <span class="en">Requesting & After Submission</span>
+                    </h2>
+                    <p>
+                        <b class="cn">提交申请</b>
+                        <b class="en">Submitting a request</b>
+                    </p>
+                    <ul>
+                        <li>
+                            <span
+                                class="cn">请在阅读完本页后，从最下方的入口进入提交申请，并且进入表单后尽快提交。它会验证你的身份，但时效较短，所以浪费太长时间在表单中可能导致验证失败。</span>
+                            <span class="en">After reading this page, please enter the request form through the entrance
+                                at the bottom and submit as quickly as possible. It will verify your identity, but the
+                                session is short, so taking too long in the form may lead to verification
+                                failure.</span>
+                        </li>
+                        <li>
+                            <span class="cn">成功提交后，你的申请将会出现在<a
+                                    href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
+                                    target="_blank">我的日志</a>。如果提交5分钟后依然没有出现，则请确保你没有被拉黑（查看其中的黑名单页），然后重新从入口进入并重新提交，且在提交时不要拖太久（如上条所述）。</span>
+                            <span class="en">After a successful submission, your request will appear in <a
+                                    href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
+                                    target="_blank">my log</a>. If it doesn't appear after 5 minutes, please ensure you
+                                are not blacklisted (check the blacklist tab), then re-enter and resubmit
+                                quickly.</span>
+                        </li>
+                    </ul>
+                    <p>
+                        <b class="cn">获知结果</b>
+                        <b class="en">Getting results</b>
+                    </p>
+                    <ul>
+                        <li>
+                            <span class="cn">你可以在<a
+                                    href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
+                                    target="_blank">我的日志</a>中查看申请的结果（是否被接受），但你不必要这么做，因为如果我接受了，我会回复你的图让你知道的。</span>
+                            <span class="en">You can check the result (whether it's accepted) in <a
+                                    href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
+                                    target="_blank">my log</a>, but you don't necessarily have to, as I will reply to
+                                your map if I accept it.</span>
+                        </li>
+                        <li>
+                            <span class="cn">日志中Response为空时表示我还没有看或还没决定要不要接，不要催，催了就拒绝。</span>
+                            <span class="en">When Response is empty in the log, it means I haven't looked at it or
+                                haven't decided whether to take it yet. Do not rush me; rushing will result in
+                                rejection.</span>
+                        </li>
+                        <li>
+                            <span
+                                class="cn">极少数情况下Response会出现Maybe，此时我不会通知你，如果你看到了可以联系我。更少数情况下则会出现Special，我会私信联系你的。</span>
+                            <span class="en">In very few cases, Response will show Maybe. I will not notify you in this
+                                case; if you see it, you can contact me. In even rarer cases, Special will appear, and I
+                                will contact you via PM.</span>
+                        </li>
+                    </ul>
+                    <p>
+                        <b class="cn">一旦接受</b>
+                        <b class="en">Once accepted</b>
+                    </p>
+                    <ul>
+                        <li>
+                            <span class="cn">接受你的图意味着我有意愿点你的图，但不代表我必定会点。</span>
+                            <span class="en">Accepting your map means I intend to nominate it, but it does not guarantee
+                                that I will.</span>
+                        </li>
+                        <li>
+                            <span class="cn">如果你在我接受你的图后想增加难度，请告知我。如果新增加的难度没有达到我的标准，我不会点这张图。</span>
+                            <span class="en">If you want to add new diffs after I have accepted your map, please let me
+                                know. If the new diffs do not meet my standards, I will drop the map.</span>
+                        </li>
+                        <li>
+                            <span class="cn">你的图被接受后，请在准备好后QQ或<a href="https://osu.ppy.sh/home/messages/users/6149313"
+                                    target="_blank">私信</a>我，同时告诉我另一位BN是谁。准备好是指：你已经找到了足够的BN，且所有其他的issue/problem已被解决（除非你故意留着等待更多意见）。如果我是2nd，准备好还意味着1st已经摸完了。</span>
+                            <span class="en">Once your map is accepted, please <a
+                                    href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">PM</a> me when
+                                it is ready, and tell me who the other BN is. "Ready" means: you have found enough BNs,
+                                and all other issues/problems have been resolved (unless you intentionally left them for
+                                more feedback). If I am the 2nd BN, "ready" also means the 1st BN has finished
+                                modding.</span>
+                        </li>
+                        <li>
+                            <span class="cn">对于我已经接受的图，如果你已经有了足够的BN，或想要找其他BN代替我，或者让我代替其他BN，或者交换1st and 2nd
+                                BN的顺序，都请告诉我，但请确保也告诉其他相关BN并征得他们的同意。</span>
+                            <span class="en">For maps I have accepted, if you already have enough BN, want to find
+                                another BN to replace me, have me replace another BN, or swap the order of 1st and 2nd
+                                BN, please feel free to tell me, but ensure you also inform and get consent from the
+                                other BNs involved.</span>
+                        </li>
+                        <li>
+                            <span class="cn">你应该恰当地回复所有的摸，即对于你不想改的地方，给出合理且充分的解释。以下为一些不恰当回复的例子：</span>
+                            <span class="en">You should respond to all mods appropriately, providing reasonable and
+                                sufficient explanations for things you don't want to change. Here are some examples of
+                                inappropriate responses:</span>
+                            <br>
+                            <span class="cn">我不想改</span><span class="cn comments">（没有给出解释）</span>
+                            <span class="en">I want to keep</span> <span class="en comments">(No explanation
+                                given)</span>
+                            <br>
+                            <span class="cn">我感觉原来更好</span><span class="cn comments">（解释不够充分：需要说明为什么你觉得原来更好）</span>
+                            <span class="en">I prefer the original</span> <span class="en comments">(Insufficient
+                                explanation: need to explain why you think the original is better)</span>
+                            <br>
+                            <span class="cn">这样PP更多</span><span class="cn comments">（解释不够合理：没有围绕作图本身）</span>
+                            <span class="en">This would be more pp</span> <span class="en comments">(Unreasonable
+                                explanation: not focused on the mapping itself)</span>
+                        </li>
+                    </ul>
+                    <h2>
+                        <span class="cn">申请入口</span>
+                        <span class="en">Request Entrance</span>
+                    </h2>
+                    <div class="dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <span class="toggle-label">
+                                <span class="cn">点击展开（请先读完以上全部内容）</span>
+                                <span class="en">Click to expand (Please read everything above first)</span>
+                            </span>
+                            <span class="toggle-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="https://pata-mon.github.io/authentication"
+                                target="_blank">https://pata-mon.github.io/authentication</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="b4b" class="tab-content">
+                    <p>
+                        <span class="cn comments">B4B的意思是互相点图，所以本页仅限BN/NAT。</span>
+                        <span class="en comments">B4B stands for "bubble for bubble" (bubble = nominate), so this page
+                            is only for BN/NAT.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">规则……？</span>
+                        <span class="en">Rules...?</span>
+                    </h2>
+                    <p>
+                        <span class="cn">如果是B4B的话，其实没有什么真正的规则，直接QQ或<a
+                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">私信</a>我即可。</span>
+                        <span class="en">For B4B, there aren't really any strict rules. Just <a
+                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">PM</a> me
+                            directly.</span>
+                    </p>
+                    <p>
+                        <span class="cn">不过如果你能满足我在通常BN
+                            Req中关于图的几条要求的话，我会很感激（但不是必须的），即：在图的所有难度完成后再找我（除非想要Ticket）、图不要太难（≤7.00*），不要给我sped
+                            ver./极端嗓/极端刺耳的音乐。</span>
+                        <span class="en">However, I would appreciate it if you could meet a few of my general BN request
+                            requirements — though not mandatory: contact me only after all diffs are finished (except
+                            for ticket), avoid too hard map (≤7.00*), and avoid sped up ver./harsh vocals/extremely
+                            piercing music.</span>
+                    </p>
+                    <p>
+                        <span class="cn">虽然是B4B，我还是会判断一下我能否接受这张图。如果我出于某些原因不想点它，我会在第一时间告诉你。</span>
+                        <span class="en">Even for B4B, I will still judge whether I can accept the map. If I don't want
+                            to nominate it for some reason, I will let you know right away.</span>
+                    </p>
+                    <p>
+                        <span
+                            class="cn">Ticket也可以，不管是我有你的Ticket还是你有我的Ticket。如果你想使用Ticket但不幸的是我不想点这张图的话，那么当然，这张Ticket依然保留，你下次还可以找我。</span>
+                        <span class="en">Tickets are also welcome, whether it's one I owe you or vice versa. If you want
+                            to use a ticket but unfortunately I don't want to nominate that specific map, the ticket
+                            will remain valid for your next request.</span>
+                    </p>
+                </div>
+
+                <div id="tp" class="tab-content">
+                    <h2>
+                        <span class="cn">试图</span>
+                        <span class="en">Testplay</span>
+                    </h2>
+                    <p>
+                        <span class="cn">仅限mu。但说实话不太推荐，我现在没有很想试图，也不会提供什么情绪价值，所以不要有太高期待。</span>
+                        <span class="en">No.<br>Only for Chinese-speaking mutual friends.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">快速看图</span>
+                        <span class="en">Quick View</span>
+                    </h2>
+                    <p>
+                        <span class="cn">我有时（主要是周末晚上），会在<a href="https://live.bilibili.com/600907"
+                                target="_blank">B站</a>直播。如果我在直播摸图或者看图的话，你可以发弹幕让我快速看一下你的图并提点建议，但不要一个人发太多。</span>
+                        <span class="en">No.<br>Only for Chinese speakers. Please switch to Chinese to view if you
+                            are.</span>
+                    </p>
+                </div>
+
+                <div id="gd" class="tab-content">
+                    <h2>
+                        <span class="cn">想让我做GD</span>
+                        <span class="en">Request a GD from me</span>
+                    </h2>
+                    <p>
+                        <span class="cn">仅限For Ranked（你至少需要有一个Ranked难度并准备飞这张图），仅限Insane及以上难度，仅限我不讨厌的歌（参考通常BN
+                            Req中我的偏好）。</span>
+                        <span class="en">For Ranked only (you must have at least one Ranked diff and plan to rank this
+                            map), Insane and above only, and only for songs I don't dislike (refer to my preferences in
+                            the General BN Req).</span>
+                    </p>
+                    <p>
+                        <span class="cn">满足以上条件的前提下，你可以QQ或<a href="https://osu.ppy.sh/home/messages/users/6149313"
+                                target="_blank">私信</a>询问我，请附上你要做的歌曲（图）和其他全部要求（如希望我做的难度、你希望的截止时间等）。</span>
+                        <span class="en">If the above conditions are met, you can <a
+                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">PM</a> me. Please
+                            include the song/map link and all requirements (e.g., specific diff, deadline).</span>
+                    </p>
+                    <p>
+                        <span class="cn">请知悉我总会为自己的难度下音效，并且注意不要误操作将其他难度的音效复制到我的难度上。</span>
+                        <span class="en">Please be aware that I always hitsound my own diffs. Be careful not to
+                            accidentally overwrite my hitsounds when copying from other diffs.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">想给我做GD</span>
+                        <span class="en">Offer a GD to me</span>
+                    </h2>
+                    <p>
+                        <span class="cn">我通常会在QQ群里找GD，回复我就行了。</span>
+                        <span class="en">Usually, I look for GDs only in Chinese QQ groups, so...</span>
+                    </p>
+                    <h2>
+                        <span class="cn">Hitsound或Timing</span>
+                        <span class="en">Hitsound or Timing</span>
+                    </h2>
+                    <p>
+                        <span class="cn">不。我只给自己的图做。</span>
+                        <span class="en">No. I only do them for my own map.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">想让我做比赛定制图</span>
+                        <span class="en">Request a tournament custom map</span>
+                    </h2>
+                    <p>
+                        <span class="cn">仅限允许我自己选曲的情况（当然你可以提BPM等要求），仅限6.50*及以下（开启mod前的星数）</span>
+                        <span class="en">Only if I am allowed to choose the song (BPM requirements are fine), and
+                            limited to 6.50* or below (the star rating before applying mods).</span>
+                    </p>
+                    <p>
+                        <span class="cn">如果允许TV Size的长度，请告诉我。这种情况下我接受的机会会大得多。</span>
+                        <span class="en">If TV Size length is allowed, please let me know. I'll be much more likely to
+                            accept it in that case.</span>
+                    </p>
+                    <p>
+                        <span class="cn">不做NM1、NM2、耐力纯串类NM5或DT2。切指不在此列。</span>
+                        <span class="en">I do not make NM1, NM2, stamina NM5/DT2 with pure stream. Finger control maps
+                            are not included in this category.</span>
+                    </p>
+                    <p>
+                        <span class="cn">你的比赛应该有一定的成功办赛历史，或者出于某种原因能让我相信会是一个成功的比赛。</span>
+                        <span class="en">Your tournament should have a history of success, or some reason for me to
+                            believe it will be successful.</span>
+                    </p>
+                    <p>
+                        <span class="cn">满足以上条件的前提下，你可以QQ或<a href="https://osu.ppy.sh/home/messages/users/6149313"
+                                target="_blank">私信</a>询问我，请尽可能多地附上比赛的信息以及其他要求。</span>
+                        <span class="en">If the above conditions are met, you can <a
+                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">PM</a> me. Please
+                            include as much information about the tournament and your requirements as possible.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">想为了比赛修改我的图</span>
+                        <span class="en">Request a tournament edit of my map</span>
+                    </h2>
+                    <p>
+                        <span class="cn">如果只是想修改OD或HP，不需要询问我，直接改就行。</span>
+                        <span class="en">If you only want to change OD or HP, there is no need to ask, just change
+                            it.</span>
+                    </p>
+                    <p>
+                        <span class="cn">如果想要修改其他内容的话，请QQ或<a href="https://osu.ppy.sh/home/messages/users/6149313"
+                                target="_blank">私信</a>询问我，并附上比赛信息和想要修改的内容。</span>
+                        <span class="en">If you want to modify other content, please <a
+                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">PM</a> me with
+                            tournament info and the specific changes you'd like to make.</span>
+                    </p>
+                    <p>
+                        <span class="cn">在我同意修改的情况下（包括第一种不需要询问我的情况），请你自行上传修改后的图，并在难度名前添加“Pata-Mon's
+                            ”（本来就有的不用再次添加），在难度名后添加“ (Tournament Edit)”或类似含义的文本，并修改GD作者为我。</span>
+                        <span class="en">If I agree to the edits (including OD/HP changes), please upload the edited map
+                            yourself. Add "Pata-Mon's " before the diff name (if not already there), and " (Tournament
+                            Edit)" after it. Ensure the difficulty owner is set to me.</span>
+                    </p>
+                </div>
+
+                <div id="other" class="tab-content">
+                    <h2>
+                        <span class="cn">双向好友（Mu）</span>
+                        <span class="en">Mutual Friend</span>
+                    </h2>
+                    <p>
+                        <span class="cn">我通常不会回复，尤其是如果我们根本没说过几句话。</span>
+                        <span class="en">I usually don't respond, especially if we have barely spoken to each
+                            other.</span>
+                    </p>
+                    <p>
+                        <span class="cn">但如果你Rank过我的GD，或者点过我的图，我通常会接受。</span>
+                        <span class="en">But feel free to ask me if you have ranked my GD or nominated my map, I'm
+                            usually happy to add you back.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">作图比赛邀请 - 评委</span>
+                        <span class="en">Mapping Contest - Judge</span>
+                    </h2>
+                    <p>
+                        <span class="cn">通常来说我不是特别有兴趣，不过如果你想的话可以试着问问，但不要抱太大希望。</span>
+                        <span class="en">I'm generally not very interested, but you can try asking if you'd like. Don't
+                            have high expectations though.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">作图比赛邀请 - 参赛</span>
+                        <span class="en">Mapping Contest - Contestant</span>
+                    </h2>
+                    <p>
+                        <span class="cn">不。<br>我不参加作图比赛。</span>
+                        <span class="en">No.<br>I do not participate in mapping contests.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">打图比赛邀请 - Staff</span>
+                        <span class="en">Tournament - Staff</span>
+                    </h2>
+                    <p>
+                        <span
+                            class="cn">如果国内比赛Staff里有熟人的话可以试着拉我，但我现在很忙，只能做一些类似于图池快速检查等偏向于顾问类的工作，不要对我有太高期待。另外如果图池会上7*就别找我了。</span>
+                        <span class="en">No.<br>Only for Chinese tournaments.</span>
+                    </p>
+                    <h2>
+                        <span class="cn">打图比赛邀请 - 参赛</span>
+                        <span class="en">Tournament - Player</span>
+                    </h2>
+                    <p>
+                        <span class="cn">如果在群里说过话的话可以试着拉我，但只参加上限跟我Rank差不多的比赛或者不要高太多的低AR赛。目前比较忙，不要对我有太高期待。</span>
+                        <span class="en">No.<br>Only for Chinese speakers.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const languageSwitch = document.querySelector('.language-switch');
+            const langOptionEn = document.getElementById('lang-text-en');
+            const langOptionCn = document.getElementById('lang-text-cn');
+            const container = document.querySelector('.container');
+            const headerTitle = document.getElementById('headerTitle');
+
+            function init() {
+                initLanguage();
+                initTabs();
+            }
+
+            function initTabs() {
+                const hash = window.location.hash.substring(1);
+                const validTabs = Array.from(tabButtons).map(button => button.dataset.tab);
+
+                if (validTabs.includes(hash)) {
+                    switchTab(hash);
+                } else {
+                    const firstTab = tabButtons[0].dataset.tab;
+                    switchTab(firstTab);
+                    if (!window.location.hash) updateUrlHash(firstTab);
+                }
+            }
+
+            function switchTab(tabId) {
+                let activeBtnTextHTML = "";
+
+                tabButtons.forEach(button => {
+                    const isActive = button.dataset.tab === tabId;
+                    button.classList.toggle('active', isActive);
+                    if (isActive) {
+                        activeBtnTextHTML = button.innerHTML;
+                    }
+                });
+
+                if (headerTitle) {
+                    headerTitle.innerHTML = `<h1>${activeBtnTextHTML}</h1>`;
+                }
+
+                tabContents.forEach(content => {
+                    content.classList.toggle('active', content.id === tabId);
+                });
+
+                const tabsContent = document.querySelector('.tabs-content');
+                if (tabsContent) {
+                    tabsContent.scrollTop = 0;
+                }
+            }
+
+            function updateUrlHash(tabId) {
+                window.location.hash = tabId;
+            }
+
+            function initLanguage() {
+                const storedLanguage = localStorage.getItem('language');
+                if (storedLanguage && (storedLanguage === 'en' || storedLanguage === 'cn')) {
+                    setLanguage(storedLanguage);
+                } else {
+                    const browserLang = navigator.language || navigator.userLanguage;
+                    const isChinese = /^zh/.test(browserLang);
+                    setLanguage(isChinese ? 'cn' : 'en');
+                }
+            }
+
+            // 设置语言的具体逻辑
+            function setLanguage(lang) {
+                // 1. 设置主容器样式，控制页面内容显隐
+                container.classList.remove('show-en', 'show-cn');
+                container.classList.add(lang === 'en' ? 'show-en' : 'show-cn');
+                document.title = lang === 'en' ? 'Request Pata-Mon' : '向 Pata-Mon 提出申请'
+
+                // 2. 更新开关组件内部文字的高亮状态
+                if (lang === 'en') {
+                    langOptionEn.classList.add('active');
+                    langOptionCn.classList.remove('active');
+                    languageSwitch.className = 'language-switch english';
+                } else {
+                    langOptionEn.classList.remove('active');
+                    langOptionCn.classList.add('active');
+                    languageSwitch.className = 'language-switch chinese';
+                }
+
+                // 3. 保存
+                localStorage.setItem('language', lang);
+            }
+
+            // --- 事件监听 ---
+
+            // 标签页点击
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const tabId = this.dataset.tab;
+                    switchTab(tabId);
+                    updateUrlHash(tabId);
+                });
+            });
+
+            // 语言切换 - 整体点击事件
+            languageSwitch.addEventListener('click', function () {
+                // 获取当前语言 (根据容器class判断，或者读取storage)
+                const currentLang = container.classList.contains('show-en') ? 'en' : 'cn';
+                // 反转语言
+                const newLang = currentLang === 'en' ? 'cn' : 'en';
+                setLanguage(newLang);
+            });
+
+            // 浏览器导航监听
+            window.addEventListener('hashchange', function () {
+                const hash = window.location.hash.substring(1);
+                const validTabs = Array.from(tabButtons).map(button => button.dataset.tab);
+                if (validTabs.includes(hash)) {
+                    switchTab(hash);
+                }
+            });
+
+            init();
+        });
+
+        // 使用事件委托处理点击事件
+        document.addEventListener('click', function (event) {
+            // 检查点击的是否是下拉切换按钮
+            if (event.target.closest('.dropdown-toggle')) {
+                const toggleBtn = event.target.closest('.dropdown-toggle');
+                const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+
+                // 切换aria-expanded状态
+                toggleBtn.setAttribute('aria-expanded', !isExpanded);
+            }
+        });
+    </script>
+</body>
+
+</html>
