@@ -312,6 +312,16 @@
         a {
             color: #569
         }
+
+        ul.like li::marker {
+            content: "✅ ";
+        }
+        ul.dislike li::marker {
+            content: "❌ ";
+        }
+        ul.warning li::marker {
+            content: "⚠️ ";
+        }
     </style>
 </head>
 
@@ -408,7 +418,7 @@
                         <b class="en">This is the part you must follow;
                             request that violate this part will be outright rejected, thus making your future requests are also more likely to be rejected.</b>
                     </p>
-                    <ul>
+                    <ul class="warning">
                         <li>
                             <span class="cn">你的图必须符合<a href="https://osu.ppy.sh/wiki/en/Ranking_criteria"
                                     target="_blank">RC</a>，且必须是做完的。这意味着没有正在等待完成的难度，每个难度都已经做完并且下了音效，且没有使用生成式AI。</span>
@@ -514,7 +524,7 @@
                         <b class="cn">我喜欢：</b>
                         <b class="en">I like:</b>
                     </p>
-                    <ul>
+                    <ul class="like">
                         <li>
                             <span class="cn">能切实表现音乐的有趣的图。</span>
                             <span class="en">Interesting maps that effectively represent the music.</span>
@@ -543,7 +553,7 @@
                         <b class="cn">我不喜欢：</b>
                         <b class="en">I don't like:</b>
                     </p>
-                    <ul>
+                    <ul class="dislike">
                         <li>
                             <span class="cn">没有真正在表达音乐的、能被称为“XX Slop”的图。这种图就没必要费心请求了，被接受的机会是0%。</span>
                             <span class="en">Maps that don't really express the music, often referred to as "XX Slop".
