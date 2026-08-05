@@ -282,8 +282,16 @@
         }
 
         /* 其他样式 */
+        ._hidden {
+            display: none;
+        }
+
         .comments {
             color: #aaa;
+        }
+
+        .highlight {
+            color: red;
         }
 
         ul {
@@ -316,9 +324,11 @@
         ul.like li::marker {
             content: "➕ ";
         }
+
         ul.dislike li::marker {
             content: "➖ ";
         }
+
         ul.warning li::marker {
             content: "⚠️ ";
         }
@@ -373,15 +383,16 @@
                         <span class="en">你可以点击右上角按钮来切换成中文。</span>
                     </p>
                     <p>
-                        <span class="cn">如果你对我有任何申请，请先阅读相应的规则（见左侧边栏）。违反规则的申请会被直接拒绝，并导致你将来的申请也更可能被拒绝。如果确信本文档中没有包含你的申请所对应的规则，可以QQ或<a
+                        <span
+                            class="cn">如果你对我有任何申请，请先阅读相应的规则（见左侧边栏）。违反规则的申请会被直接拒绝，并导致你将来的申请也更可能被拒绝。如果确信本文档中没有包含你的申请所对应的规则，可以QQ或<a
                                 href="https://osu.ppy.sh/home/messages/users/6149313"
                                 target="_blank">私信</a>询问我，但不要询问与Osu!无关的内容。</span>
-                        <span class="en">Please read the corresponding rules first (see left sidebar) before submitting a request. 
-                            Request that violate the rules will be outright rejected, thus making your future requests are also more likely to be rejected.
-                            If you are
-                            certain that the rules for your request are not included in this document, you can <a
-                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">DM</a> me, but don't
-                            ask anything unrelated to osu!.</span>
+                        <span class="en">Please read the corresponding rules first (see left sidebar) before submitting
+                            a request. Request that violate the rules will be outright rejected, thus making your future
+                            requests are also more likely to be rejected. If you are certain that the rules for your
+                            request are not included in this document, you can <a
+                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">DM</a> me, but
+                            don't ask anything unrelated to osu!.</span>
                     </p>
                     <p>
                         <span class="cn">你可以在<a
@@ -396,18 +407,27 @@
                 <div id="bn" class="tab-content">
                     <p class="comments">
                         <span class="cn">如果你是BN/NAT，我希望你能跟我B4B（见侧边栏下一项），而非通过本渠道申请。</span>
-                        <span class="en">If you are a BN/NAT, I would prefer a B4B (see the next item in the
-                            sidebar) instead of applying through this channel.</span>
+                        <span class="en">If you are a BN/NAT, I would prefer a B4B (see the next item in the sidebar)
+                            instead of applying through this channel.</span>
                     </p>
                     <p>
-                        <b class="cn">请务必在提交申请前完整阅读以下内容，违反规则的申请会被直接拒绝，并导致你将来的申请也更可能被拒绝。我的BN Req总是开放的，所以不用着急，认真读完它再申请吧。另外，请保证<a
-                                href="https://osu.ppy.sh/home/account/edit"
+                        <b class="cn">请务必在提交申请前完整阅读以下内容，违反规则的申请会被直接拒绝，并导致你将来的申请也更可能被拒绝。我的BN
+                            Req总是开放的，所以不用着急，认真读完它再申请吧。另外，请保证<a href="https://osu.ppy.sh/home/account/edit"
                                 target="_blank">你的私信开放</a>，以便如果需要的话我能联系上你。</b>
                         <b class="en">Please make sure to read the following content completely before submitting a
-                            request, since request that violate the rules will be outright rejected, thus making your future requests are also more likely to be rejected.
-                            My BN requests are always open, so take your time and read through them before requesting.
-                            Also, please ensure <a href="https://osu.ppy.sh/home/account/edit"
-                                target="_blank">your DMs are open</a> so that I can contact you if needed.</b>
+                            request, since request that violate the rules will be outright rejected, thus making your
+                            future requests are also more likely to be rejected. My BN requests are always open, so take
+                            your time and read through them before requesting.
+                            Also, please ensure <a href="https://osu.ppy.sh/home/account/edit" target="_blank">your DMs
+                                are open</a> so that I can contact you if needed.</b>
+                    </p>
+                    <p class="highlight _hidden">
+                        <b class="cn">规则变化提示：</b>
+                        <b class="en">Notice of Rule Changes:</b>
+                        <br>
+                        <b class="cn">2026-08-05：新增Spread要求，见下方红字。</b>
+                        <b class="en">2026-08-05: A spread requirement has been added;
+                            please refer to the red text below.</b>
                     </p>
                     <h2>
                         <span class="cn">规则</span>
@@ -416,28 +436,51 @@
                     <p>
                         <b class="cn">这是你必须要遵守的部分，违反这部分规则的申请会被直接拒绝，并导致你将来的申请也更可能被拒绝。</b>
                         <b class="en">This is the part you must follow;
-                            request that violate this part will be outright rejected, thus making your future requests are also more likely to be rejected.</b>
+                            request that violate this part will be outright rejected, thus making your future requests
+                            are also more likely to be rejected.</b>
                     </p>
                     <ul class="warning">
+                        <li>
+                            <span class="cn">你只能提交自己是host的图。</span>
+                            <span class="en">You can only submit mapsets you host.</span>
+                        </li>
                         <li>
                             <span class="cn">你的图必须符合<a href="https://osu.ppy.sh/wiki/en/Ranking_criteria"
                                     target="_blank">RC</a>，且必须是做完的。这意味着每个难度都已经做完并且下了音效，且没有使用生成式AI。</span>
                             <span class="en">Your map must follow the <a
-                                    href="https://osu.ppy.sh/wiki/en/Ranking_criteria" target="_blank">RC</a> and must be finished.
+                                    href="https://osu.ppy.sh/wiki/en/Ranking_criteria" target="_blank">RC</a> and must
+                                be finished.
                                 This means every diff is finished and hitsounded, and generative AI is not used.</span>
                         </li>
                         <li>
                             <span class="cn">你的图最高难度不能超过7.00*（6.50*以下机会更大）。</span>
-                            <span class="en">The top diff of your map can't exceed 7.00* (below 6.50* have a higher chance).</span>
+                            <span class="en">The top diff of your map can't exceed 7.00* (below 6.50* have a higher
+                                chance).</span>
                             <br>
                             <span class="cn comments">我只点我能打得动的图，如果不到7*但我打不动的话我肯定不会接的，虽然提交这种图不违规。</span>
                             <span class="en comments">I only nominate maps I can play.
                                 If a map is less than 7* but I can't play it, I definitely won't accept it,
                                 even though submitting such a map is not a violation.</span>
                         </li>
-                        <li>
-                            <span class="cn">你只能提交自己是host的图。</span>
-                            <span class="en">You can only submit mapsets you host.</span>
+                        <li class="highlight _hidden">
+                            <span class="cn">你的图必须符合旧Spread规则（2026-08-05之前）。</span>
+                            <span class="en">Your mapset must meet the Old Spread Rules (prior to 2026-08-05).</span>
+                            <br>
+                            <span class="cn comments">旧Spread规则：如果Drain Time…</span>
+                            <span class="en comments">The Old Spread Rules:
+                                If the drain time of each difficulty is...</span>
+                            <br>
+                            <span class="cn comments">· …低于3:30，最低难度不得超过Normal。</span>
+                            <span class="en comments">· ...lower than 3:30,
+                                the lowest difficulty cannot be harder than a Normal.</span>
+                            <br>
+                            <span class="cn comments">· …介于3:30至4:15，最低难度不得超过Hard。</span>
+                            <span class="en comments">· ...between 3:30 and 4:15,
+                                the lowest difficulty cannot be harder than a Hard.</span>
+                            <br>
+                            <span class="cn comments">· …介于4:15至5:00，最低难度不得超过Insane。</span>
+                            <span class="en comments">· ...between 4:15 and 5:00,
+                                the lowest difficulty cannot be harder than an Insane.</span>
                         </li>
                         <li>
                             <span class="cn">两次提交之间至少需要相隔30天（如果是填错了导致需要立即重填的则不算，但请在表单中说明）。如果你不记得上次提交是什么时候，请在<a
@@ -454,8 +497,10 @@
                         </li>
                         <li>
                             <span class="cn">如果我接受了你的上一次申请，那么两次提交之间至少需要相隔90天，因为我不想反复提名一个人的图，请给其他人一些机会。</span>
-                            <span class="en">If I accepted your last request, then there must be at least 90 days between two submissions,
-                                since I don't want to repeatedly nominate maps from the same mapper; please give others a chance.</span>
+                            <span class="en">If I accepted your last request, then there must be at least 90 days
+                                between two submissions,
+                                since I don't want to repeatedly nominate maps from the same mapper; please give others
+                                a chance.</span>
                         </li>
                         <li>
                             <span class="cn">不要重复提交同一张图，除非你做了根本性的改变（比如remap了），此时请在表单中说明。</span>
@@ -481,17 +526,23 @@
                             <span class="cn">不要提交BG和歌曲无关的图。</span>
                             <span class="en">Don't submit maps that the BG is unrelated to the song.</span>
                             <br>
-                            <span class="cn comments">BG最好直接源自专辑、Source或Artist，没有此类合适BG时，间接相关也可以接受，例如图片氛围或内容符合歌曲；但一首欧美流行/摇滚配一个随机二次元小妹妹是绝对不行的。</span>
-                            <span class="en comments">BGs should ideally be sourced directly from the Album, Source, or Artist.
-                                In the absence of these, indirectly related images are acceptable (e.g., the image's atmosphere or content matches the song). 
-                                However, pairing Western Pop/Rock with a random anime girl is strictly prohibited.</span>
+                            <span
+                                class="cn comments">BG最好直接源自专辑、Source或Artist，没有此类合适BG时，间接相关也可以接受，例如图片氛围或内容符合歌曲；但一首欧美流行/摇滚配一个随机二次元小妹妹是绝对不行的。</span>
+                            <span class="en comments">BGs should ideally be sourced directly from the Album, Source, or
+                                Artist.
+                                In the absence of these, indirectly related images are acceptable (e.g., the image's
+                                atmosphere or content matches the song).
+                                However, pairing Western Pop/Rock with a random anime girl is strictly
+                                prohibited.</span>
                         </li>
                         <li>
-                            <span
-                                class="cn">不要提交在2014年及之后已有STD Ranked图的歌曲，除非你认为你的图明显好于它们，此时请在表单中说明已有Ranked图并解释你觉得自己图更好的理由（但此种情况下我的接受标准会明显高于没有Ranked图的歌曲）。</span>
-                            <span class="en">Don't submit songs that already have (a) STD Ranked map(s) from 2014 onwards,
-                                unless you believe your map is significantly superior to them,  
-                                in which case please state that already have (a) Ranked map(s) and explain why yours is better in the form
+                            <span class="cn">不要提交在2014年及之后已有STD
+                                Ranked图的歌曲，除非你认为你的图明显好于它们，此时请在表单中说明已有Ranked图并解释你觉得自己图更好的理由（但此种情况下我的接受标准会明显高于没有Ranked图的歌曲）。</span>
+                            <span class="en">Don't submit songs that already have (a) STD Ranked map(s) from 2014
+                                onwards,
+                                unless you believe your map is significantly superior to them,
+                                in which case please state that already have (a) Ranked map(s) and explain why yours is
+                                better in the form
                                 (note that my acceptance criteria will be significantly stricter for such cases).</span>
                             <br>
                             <span class="cn comments">以下情况算已有Ranked图：</span>
@@ -519,7 +570,8 @@
                     </h2>
                     <p>
                         <b class="cn">你不必须遵守此部分内容，但由于你每隔一段时间才能提交申请一次，所以选择符合我偏好的图提交会增加你的申请被接受的几率。</b>
-                        <b class="en">While you are not required to follow this part, due to the submission cooldown, choosing a map that fits my
+                        <b class="en">While you are not required to follow this part, due to the submission cooldown,
+                            choosing a map that fits my
                             preferences will increase the chance of your request being accepted.</b>
                     </p>
                     <p>
@@ -553,7 +605,8 @@
                         <li>
                             <span class="cn">没有真正在表达音乐的、能被称为“XX Slop”的图。这种图就没必要费心申请了，被接受的机会是0%。</span>
                             <span class="en">Maps that don't really express the music, often referred to as "XX Slop".
-                                There's no need to bother requesting this kind of map; the chance of it being accepted is 0%.</span>
+                                There's no need to bother requesting this kind of map; the chance of it being accepted
+                                is 0%.</span>
                         </li>
                         <li>
                             <span class="cn">在所有难度中，有任何一个没有达到我的标准。</span>
@@ -561,7 +614,7 @@
                         </li>
                         <li>
                             <span class="cn">难度名没能正确指示出实际难度，比如一张4*的“Hard”或者一张带着180bpm 1/4分离串的“Insane”。</span>
-                            <span class="en">The diff names fail to represent the actual difficulty accurately, 
+                            <span class="en">The diff names fail to represent the actual difficulty accurately,
                                 such as a 4* "Hard" or an "Insane" with 180bpm 1/4 spacing streams.</span>
                         </li>
                         <li>
@@ -602,7 +655,8 @@
                             <span class="cn">ACG男声歌曲（专业男歌手演唱的流行音乐不在此列）；特别夹的女声歌曲（普通的萌系歌不在此列）。</span>
                             <span class="en">Anime, game & 2.5D male vocal songs (pop music performed by professional
                                 male singers are fine);
-                                excessively affected or forced female vocal songs (standard moe/kawaii songs are fine).</span>
+                                excessively affected or forced female vocal songs (standard moe/kawaii songs are
+                                fine).</span>
                         </li>
                     </ul>
                     <h2>
@@ -643,38 +697,40 @@
                                     target="_blank">我的日志</a>中查看申请的结果（是否被接受），但你不必要这么做，因为如果我接受了，我会Hype/Praise你的图让你知道的。</span>
                             <span class="en">You can check the result (whether it's accepted) in <a
                                     href="https://docs.google.com/spreadsheets/d/16Ym6LbDXZXWY0SgualEEh7EMLjFmL8J9qIYs8DcWNFw/edit?rm=minimal"
-                                    target="_blank">my log</a>, but you don't necessarily have to, as I will Hype/Praise your map to let you know if I accept it.</span>
+                                    target="_blank">my log</a>, but you don't necessarily have to, as I will Hype/Praise
+                                your map to let you know if I accept it.</span>
                         </li>
                         <li>
                             <span class="cn">日志中Response为空时表示我还没有看或还没决定要不要接，不要催，催了就拒绝。有时我可能会跳过一些图，暂时留空它们，之后再做决定。</span>
                             <span class="en">When Response is blank in the log, it means I haven't looked at it or
                                 haven't decided whether to take it yet. Don't rush me; rushing will result in rejection.
-                                Sometimes I might skip some maps, leave their responses blank for now, and make a decision later.</span>
+                                Sometimes I might skip some maps, leave their responses blank for now, and make a
+                                decision later.</span>
                         </li>
                         <li>
-                            <span
-                                class="cn">有时Response会出现Maybe，此时我不会通知你，如果你看到了可以联系我。极少数情况下则会出现Special，我会私信联系你的。</span>
-                            <span class="en">Sometimes Response will show Maybe. I won't notify you in this case; if you see it, you can contact me.
+                            <span class="cn">有时Response会出现Maybe，此时我不会通知你，如果你看到了可以联系我。极少数情况下则会出现Special，我会私信联系你的。</span>
+                            <span class="en">Sometimes Response will show Maybe. I won't notify you in this case; if you
+                                see it, you can contact me.
                                 In very few cases, Special will appear, and I will contact you via DM.</span>
                         </li>
                         <li>
-                            <span
-                                class="cn">如果你已经有了足够的BN，我会把状态改成“2BNs”且不具体看这张图。在这种情况下如果你需要找一个新BN，你可以QQ或<a
-                                href="https://osu.ppy.sh/home/messages/users/6149313"
-                                target="_blank">私信</a>我重新看它。</span>
-                            <span class="en">If you already have enough BNs, I will change Response to "2BNs" without looking at this map in detail.
+                            <span class="cn">如果你已经有了足够的BN，我会把状态改成“2BNs”且不具体看这张图。在这种情况下如果你需要找一个新BN，你可以QQ或<a
+                                    href="https://osu.ppy.sh/home/messages/users/6149313"
+                                    target="_blank">私信</a>我重新看它。</span>
+                            <span class="en">If you already have enough BNs, I will change Response to "2BNs" without
+                                looking at this map in detail.
                                 If you need to find a new BN in this situation, you can <a
-                                href="https://osu.ppy.sh/home/messages/users/6149313"
-                                target="_blank">DM</a> me to look it again.</span>
+                                    href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">DM</a> me to
+                                look it again.</span>
                         </li>
                         <li>
-                            <span
-                                class="cn">如果你的申请被拒绝了，而你想知道原因，你可以QQ或<a
-                                href="https://osu.ppy.sh/home/messages/users/6149313"
-                                target="_blank">私信</a>我询问。但答案有可能没什么营养或者不太中听，如果你不能接受，就别问。</span>
+                            <span class="cn">如果你的申请被拒绝了，而你想知道原因，你可以QQ或<a
+                                    href="https://osu.ppy.sh/home/messages/users/6149313"
+                                    target="_blank">私信</a>我询问。但答案有可能没什么营养或者不太中听，如果你不能接受，就别问。</span>
                             <span class="en">If your req is rejected and you want to know why, you can <a
-                                href="https://osu.ppy.sh/home/messages/users/6149313"
-                                target="_blank">DM</a> me to ask. But the answer might be uninformative or unpleasant to hear; if you can't accept it, then don't ask.</span>
+                                    href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">DM</a> me to
+                                ask. But the answer might be uninformative or unpleasant to hear; if you can't accept
+                                it, then don't ask.</span>
                         </li>
                     </ul>
                     <p>
@@ -714,7 +770,8 @@
                             <span class="cn">你应该恰当地回复所有的摸，即对于你不想改的地方，给出合理且充分的解释（除非摸本身就是主观的或没给出理由）。以下为一些不恰当回复的例子：</span>
                             <span class="en">You should respond to all mods appropriately, providing reasonable and
                                 sufficient explanations for things you don't want to change (Unless the modding itself
-                                is subjective or no reason is given). Here are some examples of inappropriate responses:</span>
+                                is subjective or no reason is given). Here are some examples of inappropriate
+                                responses:</span>
                             <br>
                             <span class="cn">我不想改</span><span class="cn comments">（没有给出解释）</span>
                             <span class="en">I want to keep</span> <span class="en comments">(No explanation
@@ -762,19 +819,23 @@
                         <span class="cn">如果是B4B的话，其实没有什么真正的规则，直接QQ或<a
                                 href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">私信</a>我即可。</span>
                         <span class="en">For B4B, there aren't really any strict rules. Just DC or <a
-                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">DM</a> me directly.</span>
+                                href="https://osu.ppy.sh/home/messages/users/6149313" target="_blank">DM</a> me
+                            directly.</span>
                     </p>
                     <p>
-                        <span class="cn">但虽然是B4B，我还是会判断一下我能否接受这张图。如果我出于某些原因不想点它，我会在第一时间告诉你。（但如果你的图难度还没齐，我可能没法确认我想不想点）</span>
-                        <span class="en">But even for B4B, I will still judge whether I can accept the map. 
+                        <span
+                            class="cn">但虽然是B4B，我还是会判断一下我能否接受这张图。如果我出于某些原因不想点它，我会在第一时间告诉你。（但如果你的图难度还没齐，我可能没法确认我想不想点）</span>
+                        <span class="en">But even for B4B, I will still judge whether I can accept the map.
                             If I don't want to nominate it for some reason, I will let you know right away.
-                            (But if there are still wip diffs in your map, I might not be able to confirm whether I can accept or not.)</span>
+                            (But if there are still wip diffs in your map, I might not be able to confirm whether I can
+                            accept or not.)</span>
                     </p>
                     <p>
                         <span class="cn">我很可能不会接：图我打不动（高于7.00*的跳图或者同等难度的其他类型图）、sped up (nc)
                             ver./极端嗓/极端刺耳的音乐、XX Slop。</span>
                         <span class="en">I probably won't accept:
-                            map is too hard that I can't play (aim map higher than 7.00* or other styles of maps of similar difficulty),
+                            map is too hard that I can't play (aim map higher than 7.00* or other styles of maps of
+                            similar difficulty),
                             sped up (nc) ver./harsh vocals/extremely piercing music, XX Slop.</span>
                     </p>
                     <p>
@@ -814,7 +875,8 @@
                     <p>
                         <span class="cn">仅限For Ranked（你至少需要有一个Ranked难度并准备飞这张图），仅限Insane及以上难度，仅限我不讨厌的歌（参考通常BN
                             Req中我的偏好）。</span>
-                        <span class="en">For Ranked only (you must have at least one Ranked map/GD before and plan to rank this
+                        <span class="en">For Ranked only (you must have at least one Ranked map/GD before and plan to
+                            rank this
                             map), Insane and above only, and only for songs I don't dislike (refer to my preferences in
                             the General BN Req).</span>
                     </p>
@@ -854,7 +916,8 @@
                     </p>
                     <p>
                         <span class="cn">不做NM1、NM2、耐力纯串类NM5或DT2（切指不在此列）。</span>
-                        <span class="en">I don't make NM1, NM2, stamina NM5/DT2 with pure stream (finger control maps are acceptable).</span>
+                        <span class="en">I don't make NM1, NM2, stamina NM5/DT2 with pure stream (finger control maps
+                            are acceptable).</span>
                     </p>
                     <p>
                         <span class="cn">你的比赛应该有一定的成功办赛历史，或者出于某种原因能让我相信会是一个成功的比赛。</span>
@@ -889,7 +952,8 @@
                             ”（本来就有的不用再次添加），在难度名后添加“ (Tournament Edit)”或类似含义的文本，在上传后请修改GD作者为我，并在描述中附上原图链接。</span>
                         <span class="en">If I agree to the edits (including OD/HP changes), please upload the edited map
                             yourself. Add "Pata-Mon's " before the diff name (if not already there), and " (Tournament
-                            Edit)" after it. After uploading, please change the difficulty owner to me and include a link to the original map in the description.</span>
+                            Edit)" after it. After uploading, please change the difficulty owner to me and include a
+                            link to the original map in the description.</span>
                     </p>
                 </div>
 
@@ -1085,35 +1149,3 @@
 
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
